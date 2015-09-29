@@ -8,6 +8,10 @@ $(function(){
         $.post('/site/login',data, function(){
             alert('ajax successfully');
          });
-})
+});
+    $('.register').on("click",function(){
+        window.location.href="/site/register"; 
+    })
+
 }
 )

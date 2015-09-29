@@ -14,5 +14,11 @@ router.post('/login',function(req,res){
        req.flash('error')
    } 
 });
+router.get('/register',function(req,res){
+    console.log("registering");  
+	res.render('register');
+})
+
+
 
 module.exports = router;
