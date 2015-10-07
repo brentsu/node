@@ -4,14 +4,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var methodOverride = require('method-override');
+var flash = require('connect-flash');
 var session =require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var settings =require('./settings');
-
-
 var routes = require('./routes/index');
-var users = require('./routes/users');
-var yonghu =require('./routes/yonghu');
 var site=require('./routes/site');
 
 var app = express();
@@ -33,11 +31,21 @@ app.use(session({
 	})
 }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(flash());
+app.use(function(req,res,next){
+    console.log("app.usr local");
+    res.locals.user = req.session.user;
+    res.locals.post = req.session.post;
+    var error = req.flash('error');
+    res.locals.error = error.length?error:null;
 
+    var success = req.flash('success');
+    res.locals.success = success.length?success:null;
+
+    next();
+});
 
 app.use('/', routes);
-app.use('/users', users);
-app.use('/yonghu',yonghu);
 app.use('/site',site);
 
 // catch 404 and forward to error handler
